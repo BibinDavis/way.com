@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-
 const app = express();
 
 
@@ -8,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 const cache = new Map();
-const cacheTTL = 5 * 60 * 1000; 
+const cacheTTL = 5 * 60 * 1000;
 
 app.get('/github/:username/summary', async (req, res) => {
     const { username } = req.params;
@@ -19,7 +18,7 @@ app.get('/github/:username/summary', async (req, res) => {
     const cacheKey = username.toLowerCase().trim();
     const cachedItem = cache.get(cacheKey);
     if (cachedItem && (Date.now() - cachedItem.timestamp < cacheTTL)) {
-     
+
         return res.json(cachedItem.data);
     }
     try {
@@ -39,10 +38,10 @@ app.get('/github/:username/summary', async (req, res) => {
         let allRepos = [];
         const perPage = 10;
         let page = 1;
-       
+
         while (allRepos.length < totalPublicRepos) {
             const reposResponse = await fetch(
-                `https://api.github.com/users/${username}/repos?per_page=${perPage}&page=${page}`, 
+                `https://api.github.com/users/${username}/repos?per_page=${perPage}&page=${page}`,
                 { headers }
             );
             if (!reposResponse.ok) break;
@@ -62,7 +61,6 @@ app.get('/github/:username/summary', async (req, res) => {
             };
         });
         const topRepos = processedRepos.slice(0, 5);
-
         const summaryPayload = {
             totalRepos: allRepos.length,
             totalStars,
