@@ -15,5 +15,6 @@ barchart
 kenshoo
 
 run the code 
+check if the server is running on the correct port
 http://localhost:3000/github/barchart/summary 
 in your local server to fetch the response using get methord
